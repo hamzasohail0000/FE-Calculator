@@ -1,4 +1,3 @@
-import styles from "./internetTable.module.css";
 // Example of a data array that
 // you might receive from an API
 const data = [
@@ -22,7 +21,7 @@ const data = [
   }
 ];
 
-function App() {
+function SimpleTable() {
   return (
     <div>
       <table>
@@ -34,4 +33,4 @@ function App() {
   );
 }
 
-export default App;
+export default SimpleTable;

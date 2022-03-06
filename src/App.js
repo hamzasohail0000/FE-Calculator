@@ -4,7 +4,7 @@ import Calculator from "./components/calculator/Calculator";
 export default function App() {
   return (
     <div className="App">
-      <h1 style={{ "text-align": "center" }}>Welcome</h1>
+      <h1 style={{ "textAlign": "center" }}>Welcome</h1>
       <Calculator />
     </div>
   );
