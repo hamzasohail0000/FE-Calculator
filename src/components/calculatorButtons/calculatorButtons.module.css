@@ -1,0 +1,28 @@
+.calculatorContainer {
+  margin-top: 8px;
+  display: flex;
+  width: 280px;
+  justify-content: space-around;
+  flex-flow: row wrap;
+  row-gap: 8px;
+}
+.calculatorContainerForFirstRow {
+  margin-top: 12px;
+  display: flex;
+  width: 290px;
+  justify-content: space-around;
+  flex-flow: row wrap;
+  row-gap: 8px;
+}
+
+.calculatorDigit {
+  font-size: x-large;
+}
+
+.calculatorTotalsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+  margin-top: 20px;
+}

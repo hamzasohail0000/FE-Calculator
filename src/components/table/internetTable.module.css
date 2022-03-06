@@ -1,0 +1,22 @@
+.App {
+}
+
+table {
+  border: 2px solid forestgreen;
+  height: 200px;
+  margin-left: 20px;
+}
+
+th {
+  border-bottom: 1px solid black;
+}
+
+td {
+  text-align: center;
+}
+tr {
+  border: 1px solid y7;
+}
+td {
+  border: 1px solid black;
+}
