@@ -12,7 +12,7 @@ export default function Calculator() {
   const [count, setCount] = useState(0);
   const [time, setTime] = useState(120);
   const [requestBlocked, setRequestBlocked] = useState(false);
-  const [status,setStatus] = useState(201)
+  const [status, setStatus] = useState(201);
 
   useEffect(() => {
     let interval;
@@ -21,13 +21,13 @@ export default function Calculator() {
       interval = setInterval(() => {
         setTime(time - 1);
       }, 1000);
-    } else if(status === 403){
-      setRequestBlocked(true)
-    }else{
+    } else if (status === 403) {
+      setRequestBlocked(true);
+    } else {
       setRequestBlocked(false);
     }
     return () => clearInterval(interval);
-  },[count,value,time]);
+  }, [count, value, time]);
   const handleClick = async (e, v) => {
     if (v === 'C') {
       setValue('');
@@ -39,9 +39,12 @@ export default function Calculator() {
         input: value,
         ipAddress: ipAddress.ip,
       });
-      setValue(response.currentRecord.output);
-      setData(response.data);
-      setCount(response.count);
+      if(response.status === 403){
+        setStatus(response.status)
+      }else{
+      setValue(response?.currentRecord?.output);
+      setData(response?.data);
+      setCount(response?.count);}
     } else {
       setValue(`${value.toString() + v}`);
     }
@@ -69,11 +72,18 @@ export default function Calculator() {
 
         <InternetTable data={data} />
       </div>
-      <Snackbar open={requestBlocked} autoHideDuration={2000} >
-      <Alert severity="error" sx={{ width: '100%' }}>
-        Request Blocked!
-     </Alert>
-    </Snackbar>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        open={requestBlocked}
+        autoHideDuration={2000}
+      >
+        <Alert severity="error" sx={{ width: '100%' }}>
+          Request Blocked!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
