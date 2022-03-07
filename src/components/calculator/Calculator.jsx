@@ -19,7 +19,13 @@ export default function Calculator() {
     if (count === 20) {
       setRequestBlocked(true);
       interval = setInterval(() => {
-        setTime(time - 1);
+        const timeDiff = time - 1;
+        if (timeDiff < 0) {
+          setCount(0);
+          setRequestBlocked(false);
+        } else {
+          setTime(time - 1);
+        }
       }, 1000);
     } else if (status === 403) {
       setRequestBlocked(true);
@@ -39,12 +45,13 @@ export default function Calculator() {
         input: value,
         ipAddress: ipAddress.ip,
       });
-      if(response.status === 403){
-        setStatus(response.status)
-      }else{
-      setValue(response?.currentRecord?.output);
-      setData(response?.data);
-      setCount(response?.count);}
+      if (response.status === 403) {
+        setStatus(response.status);
+      } else {
+        setValue(response?.currentRecord?.output);
+        setData(response?.data);
+        setCount(response?.count);
+      }
     } else {
       setValue(`${value.toString() + v}`);
     }
