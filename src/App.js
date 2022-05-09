@@ -1,11 +1,17 @@
-import React from "react";
-import Calculator from "./components/calculator/Calculator";
-
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Calculator from './components/calculator/Calculator';
+import LoginPage from './components/login/LoginPage';
+import Register from './components/register/RegisterPage';
+import ImageUploader from './components/imagesViewer/ImageUploader';
+import './App.css';
 export default function App() {
   return (
-    <div className="App">
-      <h1 style={{ "textAlign": "center" }}>Welcome</h1>
-      <Calculator />
-    </div>
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="calculator" element={<Calculator />} />
+      <Route path="Signup" element={<Register />} />
+      <Route path="ImageUploader" element={<ImageUploader />} />
+    </Routes>
   );
 }
