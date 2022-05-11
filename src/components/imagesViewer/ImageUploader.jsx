@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BlobServiceClient } from '@azure/storage-blob';
 import { createImage, getAllImages } from '../../commonServices';
+import { useNavigate } from 'react-router-dom';
 
 export default function ImageUploader() {
+  const navigate = useNavigate();
   const containerName = `tutorial-container`;
   const sasToken = process.env.REACT_APP_STORAGESASTOKEN;
   const storageAccountName = process.env.REACT_APP_STORAGERESOURCENAME;
@@ -85,7 +87,6 @@ export default function ImageUploader() {
 
     // *** UPLOAD TO AZURE STORAGE ***
     const blobsInContainer = await uploadFileToBlob(fileSelected);
-    console.log({ blobsInContainer });
 
     // prepare UI for results
     setBlobList(blobsInContainer);
@@ -95,6 +96,11 @@ export default function ImageUploader() {
     setUploading(false);
     setInputKey(Math.random().toString(36));
   };
+
+  const onLogout = async () => {
+    // prepare UI
+    navigate('/');
+  };
   return (
     <div>
       <div style={{ margin: '20px' }}>
@@ -103,6 +109,18 @@ export default function ImageUploader() {
         <input type="file" onChange={onFileChange} key={inputKey} />
         <button type="submit" onClick={onFileUpload}>
           Upload!
+        </button>
+        <button
+          style={{
+            width: '100px',
+            height: '30px',
+            marginLeft: '75%',
+            backgroundColor: 'blue',
+            color: 'white',
+          }}
+          onClick={onLogout}
+        >
+          logout
         </button>
 
         {uploading && '    . . . File Uploading. Please Wait'}
