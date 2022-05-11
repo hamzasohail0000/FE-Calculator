@@ -1,3 +1,4 @@
+const token = localStorage.getItem('token');
 async function buildResponseWithStatus(rawResponse) {
   let responseDataWithStatus = {};
   if (rawResponse.ok) {
@@ -38,6 +39,7 @@ export async function createImage(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: token,
       },
       body: JSON.stringify(data),
     });
@@ -74,6 +76,25 @@ export async function Signin(data) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
+    });
+    return buildResponseWithStatus(rawResponse);
+  } catch (error) {
+    console.error(error);
+    return buildResponseWithStatus({ ok: false, status: 500 });
+  }
+}
+
+export async function getAllImages(createdBy) {
+  try {
+    let url = `${'http://cloudcomputingassignment1.azurewebsites.net'}/${
+      'images?createdBy=' + createdBy
+    }`;
+    const rawResponse = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
     });
     return buildResponseWithStatus(rawResponse);
   } catch (error) {

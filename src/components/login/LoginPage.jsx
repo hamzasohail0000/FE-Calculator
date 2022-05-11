@@ -12,7 +12,7 @@ export default function SignInPage() {
     const temp = await Signin({ email, password });
     if (temp.status === 200) {
       navigate('/ImageUploader');
-      localStorage.setItem('token', JSON.stringify(temp.token));
+      localStorage.setItem('token', `Bearer ${temp.token}`);
       localStorage.setItem('user', JSON.stringify(temp.user));
     } else {
       setError(true);
