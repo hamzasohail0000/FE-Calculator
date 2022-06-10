@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BlobServiceClient } from '@azure/storage-blob';
-import { createImage, getAllImages } from '../../commonServices';
+import { createImage, getAllImages, deleteImage } from '../../commonServices';
 import { useNavigate } from 'react-router-dom';
 
 let imagesize = 0;
@@ -72,19 +72,24 @@ export default function ImageUploader() {
 
 	const onFileChange = async (event) => {
 		// capture file into state
-		console.log(imagesize + event.target.files[0].size / 1000 / 1000);
-		if (imagesize + event.target.files[0].size / 1000 / 1000 < 8) {
+		console.log(
+			parseInt(imagesize) + parseInt(event.target.files[0].size) / 1000 / 1000 >
+				8
+		);
+		if (parseInt(imagesize) + event.target.files[0].size / 1000 / 1000 > 8) {
 			alert(
 				'You have used more than 80% of your space please delete some images.'
 			);
-			return;
-		} else if (imagesize + event.target.files[0].size / 1000 / 1000 > 10) {
+		} else if (
+			parseInt(imagesize) + event.target.files[0].size / 1000 / 1000 >
+			10
+		) {
 			alert('You have used 100% space please delete some images.');
+			setFileSelected(null);
 			return;
 		}
 
 		setFileSelected(event.target.files[0]);
-		console.log({ eventFile: event.target.files });
 		const user = JSON.parse(localStorage.getItem('user'));
 		const imageObj = {
 			fileName: event.target.files[0].name,
@@ -92,7 +97,6 @@ export default function ImageUploader() {
 			createdBy: user._id,
 		};
 		const res = await createImage(imageObj);
-		console.log({ res });
 	};
 
 	const onFileUpload = async () => {
@@ -123,7 +127,7 @@ export default function ImageUploader() {
 	return (
 		<div style={{ margin: '20px' }}>
 			<div style={{ margin: '20px' }}>
-				<h4>Choose an Image to upload</h4>
+				<h2>Choose an Image to upload</h2>
 
 				<input type="file" onChange={onFileChange} key={inputKey} />
 				<button type="submit" onClick={onFileUpload}>
@@ -155,13 +159,35 @@ export default function ImageUploader() {
 			</div>
 			<h4>Uploaded Images</h4>
 			{imagesList.map((item, index) => (
-				<img
-					src={`https://cloudimagestorage.blob.core.windows.net/tutorial-container/${item.fileName}`}
-					width={200}
-					height={200}
-					key={item.fileName + index}
-					style={{ margin: '20px' }}
-				/>
+				<div
+					style={{ border: 'solid', display: 'inline-block', margin: '10px' }}
+				>
+					<img
+						src={`https://cloudimagestorage.blob.core.windows.net/tutorial-container/${item.fileName}`}
+						width={200}
+						height={200}
+						key={item.fileName + index}
+						style={{ margin: '20px' }}
+					/>
+					<button
+						type="button"
+						style={{
+							background: 'red',
+							color: 'white',
+							marginBottom: '10px',
+						}}
+						key={item.fileName + index + 'button'}
+						value={index}
+						id={index}
+						onClick={(e) => {
+							deleteImage(imagesList[parseInt(e.target.id)]._id).then(
+								async () => await getImages()
+							);
+						}}
+					>
+						Delete!
+					</button>
+				</div>
 			))}
 		</div>
 	);
